@@ -184,6 +184,21 @@ Each functional requirement maps to a black-box acceptance test that validates t
 | FR-7 | Like/unlike posts with idempotency | `verify/acceptance/test_fr7_like.py` |
 | FR-8 | Health check with DB connectivity | `verify/acceptance/test_fr8_health.py` |
 
+## Test Scenarios
+
+The important endpoint behaviours covered by `tests/functional/` (the edge cases, not every path):
+
+- **Like idempotency** — a second like by the same user returns `200` (no duplicate row); `like_count` increments once.
+- **Unlike** — unliking returns `204`; a second unlike returns `404` (not liked).
+- **Follow idempotency** — following the same user twice returns `201` then `200`.
+- **Self-follow rejected** — following yourself returns `422`.
+- **Image size limit** — an upload over 10 MB returns `413`.
+- **Hashtag search is case-insensitive** — a post tagged `#Sunset` is found by `?q=sunset`; an unused tag returns `[]`.
+- **Unknown ids** — liking or fetching a missing post returns `404`.
+
+The unit layer (`tests/unit/`) covers pure logic such as hashtag extraction (lowercasing, dedup); the
+black-box contract (one case per FR) lives in `verify/acceptance/`.
+
 ## Stack
 
 | Layer | Technology | Version |
