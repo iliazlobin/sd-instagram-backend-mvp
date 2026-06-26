@@ -1,5 +1,9 @@
 # Instagram MVP
 
+[![Lint](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/lint.yml/badge.svg)](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/lint.yml)
+[![CI](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/ci.yml/badge.svg)](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/ci.yml)
+[![Functional](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/functional.yml/badge.svg)](https://github.com/iliazlobin/sd-instagram-backend-mvp/actions/workflows/functional.yml)
+
 A minimal Instagram-style REST API backend for photo sharing, built with FastAPI and PostgreSQL.
 
 Users create profiles, upload photos with hashtags, follow each other, browse a chronological feed, like posts, and search by hashtag. The MVP pushes every new post to all followers' feeds at write time (fan-out-on-write) and uses PostgreSQL's native GIN index for hashtag search.
