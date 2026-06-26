@@ -75,11 +75,11 @@ async def test_hashtag_search_is_case_insensitive(client):
     await create_post(client, author, caption=f"sunset vibes #{tag}")
 
     # stored lowercased; search with the UPPERCASE query still matches
-    hit = await client.get(f"/search?q={tag.upper()}")
+    hit = await client.get(f"/search?q={tag.upper()}&type=hashtag")
     assert hit.status_code == 200
     assert any(tag in p["hashtags"] for p in hit.json())
 
-    miss = await client.get(f"/search?q={uuid.uuid4().hex[:10]}")
+    miss = await client.get(f"/search?q={uuid.uuid4().hex[:10]}&type=hashtag")
     assert miss.status_code == 200
     assert miss.json() == []
 
