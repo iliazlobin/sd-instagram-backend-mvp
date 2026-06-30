@@ -54,6 +54,9 @@ jobs:
           eval "$UP"
           eval "$READY"
           API_BASE_URL="http://localhost:${APP_PORT:-8010}" eval "$ACCEPTANCE"
+      - name: Dump logs on failure
+        if: failure()
+        run: docker compose logs --tail=100
       - name: Teardown
         if: always()
         run: |
