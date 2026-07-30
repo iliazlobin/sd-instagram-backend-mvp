@@ -1,7 +1,7 @@
 # ============================================================
 # Builder stage — installs Python deps into a virtualenv
 # ============================================================
-FROM python:3.12-slim AS builder
+FROM python:3.12-slim@sha256:cab2dbf575e971934a81e4622f5aba17aa7929719bd7e31033a3a83b97fd0464 AS builder
 
 ENV PYTHONUNBUFFERED=1
 
@@ -19,13 +19,13 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Install runtime deps from requirements.txt (generated from pyproject.toml)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.lock .
+RUN pip install --no-cache-dir -r requirements.lock
 
 # ============================================================
 # Runtime stage — slim, no build tools, non-root user
 # ============================================================
-FROM python:3.12-slim AS runtime
+FROM python:3.12-slim@sha256:cab2dbf575e971934a81e4622f5aba17aa7929719bd7e31033a3a83b97fd0464 AS runtime
 
 ENV PYTHONUNBUFFERED=1
 
