@@ -35,6 +35,7 @@ async def like_post_endpoint(
         like, is_new = await like_post(db, post_id, user_id)
         status_code = 201 if is_new else 200
         content = LikeResponse.model_validate(like).model_dump(mode="json")
+        await db.commit()
         return JSONResponse(status_code=status_code, content=content)
     except PostNotFoundError:
         raise HTTPException(status_code=404, detail="Post not found") from None
@@ -58,6 +59,7 @@ async def unlike_post_endpoint(
         was_liked = await unlike_post(db, post_id, user_id)
         if not was_liked:
             raise HTTPException(status_code=404, detail="Not liked")
+        await db.commit()
         return Response(status_code=204)
     except PostNotFoundError:
         raise HTTPException(status_code=404, detail="Post not found") from None

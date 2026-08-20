@@ -26,6 +26,7 @@ async def create_user_endpoint(
     """Create a new user."""
     try:
         user = await create_user(db, body.username, body.display_name)
+        await db.commit()
         return UserResponse.model_validate(user)
     except DuplicateUsernameError:
         raise HTTPException(status_code=409, detail="Username already taken") from None

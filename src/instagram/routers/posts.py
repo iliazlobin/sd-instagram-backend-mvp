@@ -70,6 +70,7 @@ async def create_post_endpoint(
             image_bytes=image_bytes,
             content_type=image.content_type or "image/jpeg",
         )
+        await db.commit()
         return PostResponse.model_validate(post)
     except FileTooLargeError:
         raise HTTPException(status_code=413, detail="Image too large") from None
