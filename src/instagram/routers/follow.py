@@ -36,6 +36,7 @@ async def follow_user_endpoint(
         follow, is_new = await follow_user(db, follower_id, followed_id)
         status_code = 201 if is_new else 200
         content = FollowResponse.model_validate(follow).model_dump(mode="json")
+        await db.commit()
         return JSONResponse(status_code=status_code, content=content)
     except SelfFollowError:
         raise HTTPException(status_code=422, detail="Cannot follow yourself") from None
@@ -61,6 +62,7 @@ async def unfollow_user_endpoint(
         was_following = await unfollow_user(db, follower_id, followed_id)
         if not was_following:
             raise HTTPException(status_code=404, detail="Not following this user")
+        await db.commit()
         return Response(status_code=204)
     except SelfFollowError:
         raise HTTPException(status_code=422, detail="Cannot unfollow yourself") from None
